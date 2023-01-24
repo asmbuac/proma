@@ -3,8 +3,6 @@
 {% block title %}My Tasks{% endblock title %}
 
 {% block content %}
-    <main>
-        <div>
             <h1>My Tasks</h1>
             {% if task_list|length != 0 %}
             <table>
@@ -30,6 +28,4 @@
             {% else %}
                 <p>You have no tasks</p>
             {% endif %}
-        </div>
-    </main>
 {% endblock content %}

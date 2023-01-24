@@ -3,8 +3,6 @@
 {% block title %}{{ project.name }}{% endblock title %}
 
 {% block content %}
-    <main>
-        <div>
             <h1>{{ project.name }}</h1>
             <p>{{ project.description }}</p>
             <h2>Tasks</h2>
@@ -37,6 +35,4 @@
             {% else %}
                 <p>This project has no tasks</p>
             {% endif %}
-        </div>
-    </main>
 {% endblock content %}
