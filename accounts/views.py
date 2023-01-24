@@ -10,11 +10,7 @@ def user_login(request):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            user = authenticate(
-                request,
-                username=username,
-                password=password
-            )
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect("list_projects")
@@ -39,10 +35,7 @@ def user_signup(request):
             password = form.cleaned_data["password"]
             password_confirmation = form.cleaned_data["password_confirmation"]
             if password == password_confirmation:
-                user = User.objects.create_user(
-                    username,
-                    password=password
-                )
+                user = User.objects.create_user(username, password=password)
                 login(request, user)
                 return redirect("list_projects")
             else:
