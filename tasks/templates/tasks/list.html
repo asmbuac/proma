@@ -5,7 +5,7 @@
 {% endblock title %}
 {% block content %}
     <h1>My Tasks</h1>
-    {% if task_list|length != 0 %}
+    {% if tasks|length != 0 %}
         <table>
             <thead>
                 <tr>
@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for task in task_list %}
+                {% for task in tasks %}
                     <tr>
                         <td>{{ task.name }}</td>
                         <td>{{ task.start_date }}</td>
