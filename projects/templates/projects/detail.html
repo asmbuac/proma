@@ -10,7 +10,7 @@
     <p>
         <a href="{% url "create_task" %}">Create a new task</a>
     </p>
-    {% if project.tasks.all %}
+    {% if project.tasks.all|length != 0 %}
         <table>
             <thead>
                 <tr>

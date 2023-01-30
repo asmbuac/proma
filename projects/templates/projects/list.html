@@ -8,7 +8,7 @@
     <p>
         <a href="{% url "create_project" %}">Create a new project</a>
     </p>
-    {% if not projects %}
+    {% if projects|length == 0 %}
         <p>You are not assigned to any projects</p>
     {% else %}
         <table>
