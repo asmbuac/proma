@@ -4,29 +4,133 @@
     My Tasks
 {% endblock title %}
 {% block content %}
-    <h1>My Tasks</h1>
-    {% if tasks|length != 0 %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Start date</th>
-                    <th>Due date</th>
-                    <th>Is completed</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks %}
-                    <tr>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.start_date }}</td>
-                        <td>{{ task.due_date }}</td>
-                        <td>{{ task.is_completed|yesno }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>You have no tasks</p>
-    {% endif %}
+    <section class="text-light p-5 pg-lg-0 pt-lg-5 text-center"
+             style="background-color: rgb(74, 44, 95)">
+        <div class="container-fluid">
+            <h1>My Tasks</h1>
+            <p class="lead">{{ project.description }}</p>
+        </div>
+    </section>
+    <section class="p-5">
+        <div class="container">
+            <div class="row g-12 gy-4">
+                {% if not tasks %}
+                    <p class="lead">You have no tasks</p>
+                {% else %}
+                    <div class="col-md">
+                        <!-- Active Tasks -->
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Active Tasks</h5>
+                                <p class="card-text">
+                                    {% if False not in tasks.is_completed %}
+                                        <p>You have no active tasks</p>
+                                    {% else %}
+                                        <table class="table align-middle text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Project</th>
+                                                    <th scope="col">Task</th>
+                                                    <th scope="col">Start date</th>
+                                                    <th scope="col">Due date</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for task in tasks %}
+                                                    {% if task.is_completed == False %}
+                                                        <tr>
+                                                            <td>{{ task.project }}</td>
+                                                            <td>{{ task.name }}</td>
+                                                            <td>{{ task.start_date|date:"n/j/y" }}</td>
+                                                            <td>{{ task.due_date|date:"n/j/y" }}</td>
+                                                            <td>
+                                                                <div class="dropdown">
+                                                                    <button class="btn btn-sm btn-icon btn-light btn-outline-secondary"
+                                                                            type="button"
+                                                                            data-bs-toggle="dropdown">
+                                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li>
+                                                                            <a class="dropdown-item" href="{% url "edit_task" task.id %}">Edit</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a class="dropdown-item" href="{% url "delete_task" task.id %}">Delete</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed Tasks -->
+                    <div class="col-md">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Completed Tasks</h5>
+                                <p class="card-text">
+                                    {% if True not in tasks.is_completed %}
+                                        <p>You have not completed any tasks</p>
+                                    </div>
+                                {% else %}
+                                    <table class="table align-middle text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Project</th>
+                                                <th scope="col">Task</th>
+                                                <th scope="col">Start date</th>
+                                                <th scope="col">Due date</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for task in tasks %}
+                                                {% if task.is_completed == True %}
+                                                    <tr>
+                                                        <td>{{ task.project }}</td>
+                                                        <td>{{ task.name }}</td>
+                                                        <td>{{ task.start_date|date:"n/j/y" }}</td>
+                                                        <td>
+                                                            {{ task.due_date|date:"n/j/y" }}
+                                                        </td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-icon btn-light btn-outline-secondary"
+                                                                        type="button"
+                                                                        data-bs-toggle="dropdown">
+                                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="{% url "edit_task" task.id %}">Edit</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="{% url "delete_task" task.id %}">Delete</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</section>
 {% endblock content %}

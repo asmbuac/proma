@@ -1,0 +1,24 @@
+div.d-grid button, form button.btn.purple-btn.text-white {
+    background-color: rgb(74, 44, 95);
+}
+
+div.d-grid button:hover, form button.btn.purple-btn.text-white:hover {
+    background-color: rgb(74, 44, 95, 0.88);
+}
+
+div.container p a {
+    color: rgba(255, 255, 255);
+    transition: 0.2s;
+}
+
+div.container p a:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+div a.purple-link {
+    color: rgb(74, 44, 95, 0.75);
+}
+
+div a.purple-link:hover {
+    color: rgb(74, 44, 95);
+}

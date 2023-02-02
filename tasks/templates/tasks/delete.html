@@ -1,27 +1,25 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Create a New Project
+    Delete Task
 {% endblock title %}
 {% block content %}
-    <section class="text-light p-5 pg-lg-0 pt-lg-5 mb-5 text-center"
+    <section class="text-light p-5 pg-lg-0 pt-lg-5 text-center"
              style="background-color: rgb(74, 44, 95)">
         <div class="container-fluid">
-            <h1>Create a New Project</h1>
+            <h1>Delete "{{ task }}"</h1>
         </div>
     </section>
-    <section class="py-5">
-        <div class="container" style="padding-bottom: 500px;">
+    <section style="padding-bottom: 400px">
+        <div class="container">
             <div class="row align-items-center justify-content-center py-5">
-                <div class="card position-absolute py-4 shadow-sm"
-                     style="width: 500px;
-                            margin-top: 310px">
+                <div class="card position-absolute py-4 shadow-sm" style="width: 500px;">
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
-                            <div class="d-grid mt-4 mb-3">
-                                <button class="btn purple-button text-white">Create</button>
+                            <p class="fs-5 text-center">Are you sure?</p>
+                            <div class="text-center">
+                                <button class="btn purple-button text-white">Delete</button>
                             </div>
                         </form>
                     </div>

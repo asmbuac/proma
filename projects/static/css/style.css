@@ -1,0 +1,41 @@
+body::before {
+    display: block;
+    content: '';
+    height: 50px;
+    background-color: rgb(74, 44, 95);
+}
+
+form button.btn.purple-button.text-white {
+    background-color: rgb(74, 44, 95);
+}
+
+form button.btn.purple-button.text-white:hover {
+    background-color: rgb(74, 44, 95, 0.88);
+}
+
+nav div.nav.nav-tabs.nav-link-secondary button.nav-link {
+    color: rgb(74, 44, 95, 0.75);
+}
+
+nav div.nav.nav-tabs.nav-link-secondary button.nav-link:hover, nav div.nav.nav-tabs.nav-link-secondary button.nav-link.active {
+    color: rgb(74, 44, 95);
+}
+
+div.container-fluid button.navbar-toggler {
+    border: none;
+    border-color: transparent;
+}
+
+input#search-input, button#search-button {
+    background-color: rgb(142, 122, 157, 0.9);
+    border: none;
+    outline: none;
+}
+
+input#search-input:focus {
+    outline-color: rgba(255, 255, 255, 0.88);
+}
+
+form.d-flex div.input-group.input-group-sm {
+    margin-left: 0;
+}

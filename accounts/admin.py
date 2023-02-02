@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import UserProfile, Team
 
-# Register your models here.
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    pass

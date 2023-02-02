@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Profile
+{% endblock title %}
+{% block content %}
+    <section class="text-light p-5 pg-lg-0 pt-lg-5 text-center"
+             style="background-color: rgb(74, 44, 95)">
+        <div class="container-fluid">
+            {% if profile.picture %}
+                <img src="{{ profile.picture }}" alt="profile picture">
+            {% else %}
+                <img src="https://www.kravemarketingllc.com/wp-content/uploads/2018/09/placeholder-user-500x500.png"
+                     alt=""
+                     class="rounded-circle mb-4 bg-light"
+                     style="width:150px">
+            {% endif %}
+            <h1>{{ profile.user.first_name }} {{ profile.user.last_name }}</h1>
+        </div>
+    </section>
+    <section class="pt-5 px-5">
+        <!-- Tabs -->
+        <div class="container">
+            <nav>
+                <div class="nav nav-tabs nav-link-secondary" id="nav-tab" role="tablist">
+                    <button class="nav-link active"
+                            id="nav-projects-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-projects"
+                            type="button"
+                            role="tab">
+                        Projects
+                    </button>
+                    <button class="nav-link"
+                            id="nav-team-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-team"
+                            type="button"
+                            role="tab">
+                        Team
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </section>
+    <!-- Projects -->
+    <div>
+        <div class="container">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active"
+                     id="nav-projects"
+                     role="tabpanel"
+                     tabindex="0">
+                    <div class="row text-center g-4 mt-3">
+                        {% for project in profile.team.projects.all %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card bg-light shadow-sm">
+                                    <div class="card-body text-center">
+                                        <div class="h1 mb-3">
+                                            <i class="bi bi-layers"></i>
+                                        </div>
+                                        <h3 class="card-title mb-3">
+                                            <a class="link-dark"
+                                               href="{% url "show_project" project.id %}"
+                                               style="text-decoration: none">{{ project.name }}</a>
+                                        </h3>
+                                        <p class="card-text">{{ project.tasks.all|length }} tasks</p>
+                                        <a href="{% url "show_project" project.id %}"
+                                           class="btn btn-outline-secondary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team -->
+    <div>
+        <div class="container mt-3 mb-5">
+            <div class="tab-pane fade" id="nav-team" role="tabpanel" tabindex="0">
+                {% if not profile.team %}
+                    <p>{{ profile.first_name }} is not assigned to a team yet</p>
+                {% else %}
+                    <h4 class="text-center">
+                        <strong>{{ profile.team }}</strong>
+                    </h4>
+                    <hr>
+                    <p>
+                        <h4>Other Members:</h4>
+                    </p>
+                    <div class="row gy-4">
+                        {% for member in profile.team.members.all %}
+                            {% if member.user_id == profile.user.id %}
+                                <!-- continue -->
+                            {% else %}
+                                {% if profile.team.members.all|length < 3 %}
+                                    <div class="col-md">
+                                    {% else %}
+                                        <div class="col-md-6 col-lg-3">
+                                        {% endif %}
+                                        <div class="card bg-light shadow-sm">
+                                            <div class="card-body text-center">
+                                                <div class="h1 mb-3">
+                                                    <i class="bi bi-person-circle h1" style="width: 100%;"></i>
+                                                </div>
+                                                <h3 class="card-title mb-3">
+                                                    <a class="link-dark"
+                                                       href="{% url "view_user_profile" member.id %}"
+                                                       style="text-decoration: none">{{ member.user.first_name }} {{ member.user.last_name }}</a>
+                                                </h3>
+                                                <p class="card-text">
+                                                    {{ member.user.tasks.all|length }}
+                                                    {% if member.user.tasks.all|length == 1 %}
+                                                        task
+                                                    {% else %}
+                                                        tasks
+                                                    {% endif %}
+                                                </p>
+                                                <p>
+                                                    <a href="{% url "view_user_profile" member.id %}"
+                                                       class="btn btn-outline-secondary btn-sm">View Profile</a>
+                                                </p>
+                                                <a href="#"><i class="bi bi-twitter text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-facebook text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-linkedin text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-instagram text-dark mx-1"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

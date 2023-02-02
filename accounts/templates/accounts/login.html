@@ -1,13 +1,74 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-    Login
-{% endblock title %}
-{% block content %}
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>Login</button>
-    </form>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static "css/sign-in-or-up.css" %}">
+    </head>
+    <body>
+        <header class="text-light pt-5 pb-5 mb-4 px-5 pg-lg-0 pt-lg-5 text-center"
+                style="background-color: rgb(74, 44, 95)">
+            <div class="container">
+                <h1>
+                    pr <i class="bi bi-check-circle text-warning"></i> ma
+                </h1>
+                <p>
+                    Don't have an account? <a href="{% url "signup" %}">Sign up</a>
+                </p>
+            </div>
+        </header>
+        <section class="text-center">
+            <div class="container">
+                <div class="row align-items-center text-center justify-content-center py-5">
+                    <div class="card position-absolute mt-5 py-2 shadow-sm"
+                         style="width: 500px">
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                {% if form.errors %}<span class="text-muted">The login is incorrect. Please try again.</span>{% endif %}
+                                <div>
+                                    <label for="id_username"></label>
+                                    <input type="text"
+                                           name="username"
+                                           maxlength="150"
+                                           required=""
+                                           id="id_username"
+                                           placeholder="Username"
+                                           class="form-control">
+                                </div>
+                                <div>
+                                    <label for="id_password"></label>
+                                    <input type="password"
+                                           name="password"
+                                           maxlength="150"
+                                           required=""
+                                           id="id_password"
+                                           placeholder="Password"
+                                           class="form-control">
+                                </div>
+                                <div class="d-grid mt-4 mb-3">
+                                    <button class="btn text-white">Login</button>
+                                </div>
+                            </form>
+                            <div>
+                                <a href="#" class="purple-link">Forgot username?</a>
+                                <span><i class="bi bi-dot"></i></span>
+                                <a href="#" class="purple-link">Forgot password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

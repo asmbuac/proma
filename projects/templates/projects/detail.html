@@ -4,36 +4,284 @@
     {{ project.name }}
 {% endblock title %}
 {% block content %}
-    <h1>{{ project.name }}</h1>
-    <p>{{ project.description }}</p>
-    <h2>Tasks</h2>
-    <p>
-        <a href="{% url "create_task" %}">Create a new task</a>
-    </p>
-    {% if project.tasks.all|length != 0 %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Assignee</th>
-                    <th>Start date</th>
-                    <th>Due date</th>
-                    <th>Is completed</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in project.tasks.all %}
-                    <tr>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.assignee }}</td>
-                        <td>{{ task.start_date }}</td>
-                        <td>{{ task.due_date }}</td>
-                        <td>{{ task.is_completed|yesno }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>This project has no tasks</p>
-    {% endif %}
-{% endblock content %}
+    <section class="text-light p-5 pg-lg-0 pt-lg-5 text-center"
+             style="background-color: rgb(74, 44, 95)">
+        <div class="container-fluid">
+            <h1>{{ project.name }}</h1>
+            <p class="lead">{{ project.description }}</p>
+        </div>
+    </section>
+    <section class="px-5 pt-5">
+        <!-- Tabs -->
+        <div class="container">
+            <nav>
+                <div class="nav nav-tabs nav-link-secondary" id="nav-tab" role="tablist">
+                    <button class="nav-link active"
+                            id="nav-tasks-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-tasks"
+                            type="button"
+                            role="tab">
+                        Tasks
+                    </button>
+                    <button class="nav-link"
+                            id="nav-timeline-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-timeline"
+                            type="button"
+                            role="tab">
+                        Timeline
+                    </button>
+                    <button class="nav-link"
+                            id="nav-team-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-team"
+                            type="button"
+                            role="tab">
+                        Team
+                    </button>
+                    {% if request.user.userprofile.team_id == project.team.id %}
+                        <button class="nav-link"
+                                id="nav-editproject-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#nav-editproject"
+                                type="button"
+                                role="tab">
+                            Edit Project
+                        </button>
+                    {% endif %}
+                </div>
+            </nav>
+        </section>
+        <!-- Tasks -->
+        <div>
+            <div class="container">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active"
+                         id="nav-tasks"
+                         role="tabpanel"
+                         tabindex="0">
+                        <div class="row g-12 gy-4 mt-3 mx-5 mx-sm-0">
+                            <div class="col-md">
+                                <!-- Active Tasks -->
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">Active Tasks</h5>
+                                        <p class="card-text">
+                                            {% if False not in project.tasks.all.is_completed %}
+                                                <p>This project has no active tasks</p>
+                                            </div>
+                                        {% else %}
+                                            <table class="table align-middle text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Task</th>
+                                                        <th scope="col">Assignee</th>
+                                                        <th scope="col">Start date</th>
+                                                        <th scope="col">Due date</th>
+                                                        {% if request.user.userprofile.team_id == project.team.id %}<th scope="col"></th>{% endif %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for task in project.tasks.all %}
+                                                        {% if task.is_completed == False %}
+                                                            <tr>
+                                                                <td>{{ task.name }}</td>
+                                                                <td>{{ task.assignee.first_name }}</td>
+                                                                <td>{{ task.start_date|date:"n/j/y" }}</td>
+                                                                <td>{{ task.due_date|date:"n/j/y" }}</td>
+                                                                {% if request.user.userprofile.team_id == project.team.id %}
+                                                                    <td>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-sm btn-icon btn-light btn-outline-secondary"
+                                                                                    type="button"
+                                                                                    data-bs-toggle="dropdown">
+                                                                                <i class="bi bi-three-dots-vertical"></i>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li>
+                                                                                    <a class="dropdown-item" href="{% url "edit_task" task.id %}">Edit</a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a class="dropdown-item" href="{% url "delete_task" task.id %}">Delete</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </td>
+                                                                {% endif %}
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Completed Tasks -->
+                        <div class="col-md">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Completed Tasks</h5>
+                                    <p class="card-text">
+                                        {% if True not in project.tasks.all.is_completed %}
+                                            <p>This project has no completed tasks</p>
+                                        </div>
+                                    {% else %}
+                                        <table class="table align-middle text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Task</th>
+                                                    <th scope="col">Assignee</th>
+                                                    <th scope="col">Start date</th>
+                                                    <th scope="col">Due date</th>
+                                                    {% if request.user.userprofile.team_id == project.team.id %}<th scope="col"></th>{% endif %}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for task in project.tasks.all %}
+                                                    {% if task.is_completed == True %}
+                                                        <tr>
+                                                            <td>
+                                                                {{ task.name }}
+                                                            </td>
+                                                            <td>
+                                                                {{ task.assignee.first_name }}
+                                                            </td>
+                                                            <td>
+                                                                {{ task.start_date|date:"n/j/y" }}
+                                                            </td>
+                                                            <td>
+                                                                {{ task.due_date|date:"n/j/y" }}
+                                                            </td>
+                                                            {% if request.user.userprofile.team_id == project.team.id %}
+                                                                <td>
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-sm btn-icon btn-light btn-outline-secondary"
+                                                                                type="button"
+                                                                                data-bs-toggle="dropdown">
+                                                                            <i class="bi bi-three-dots-vertical"></i>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li>
+                                                                                <a class="dropdown-item" href="{% url "edit_task" task.id %}">Edit</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a class="dropdown-item" href="{% url "delete_task" task.id %}">Delete</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
+                                                            {% endif %}
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Timeline -->
+        <div>
+            <div class="container mx-5 mx-sm-0">
+                <div class="tab-pane fade" id="nav-timeline" role="tabpanel" tabindex="0">
+                    ...
+                </div>
+            </div>
+        </div>
+        <!-- Team -->
+        <div>
+            <div class="container">
+                <div class="tab-pane fade mx-5 mx-sm-0"
+                     id="nav-team"
+                     role="tabpanel"
+                     tabindex="0">
+                    {% if not project.team %}
+                        <p class="lead mx-5 mx-sm-0">
+                            No team has taken on this project
+                        </p>
+                    {% else %}
+                        <h4 class="text-center">
+                            <strong>{{ project.team }}</strong>
+                        </h4>
+                        <hr>
+                        <p>
+                            <h4>
+                                Members:
+                            </h4>
+                        </p>
+                        <div class="row gy-4">
+                            {% for member in project.team.members.all %}
+                                {% if projects|length < 3 %}
+                                    <div class="col-md">
+                                    {% else %}
+                                        <div class="col-md-6 col-lg-3">
+                                        {% endif %}
+                                        <div class="card bg-light shadow-sm">
+                                            <div class="card-body text-center">
+                                                <div class="h1 mb-3">
+                                                    <i class="bi bi-person-circle h1" style="width: 100%;"></i>
+                                                </div>
+                                                <h3 class="card-title mb-3">
+                                                    <a class="link-dark"
+                                                       href="{% url "view_user_profile" member.id %}"
+                                                       style="text-decoration: none">{{ member.user.first_name }} {{ member.user.last_name }}</a>
+                                                </h3>
+                                                <p class="card-text">
+                                                    {{ member.user.tasks.all|length }}
+                                                    {% if member.user.tasks.all|length == 1 %}
+                                                        task
+                                                    {% else %}
+                                                        tasks
+                                                    {% endif %}
+                                                </p>
+                                                <p>
+                                                    <a href="{% url "view_user_profile" member.id %}"
+                                                       class="btn btn-outline-secondary btn-sm">View Profile</a>
+                                                </p>
+                                                <a href="#"><i class="bi bi-twitter text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-facebook text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-linkedin text-dark mx-1"></i></a>
+                                                <a href="#"><i class="bi bi-instagram text-dark mx-1"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Edit Project -->
+                <div>
+                    <div class="container" style="margin-bottom: 200px">
+                        <div class="tab-pane fade mx-5 mx-sm-0"
+                             id="nav-editproject"
+                             role="tabpanel"
+                             tabindex="0">
+                            <div class="row">
+                                <div class="col-10 position-relative top-0 start-50 translate-middle">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body">
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                {{ form.as_p }}
+                                                <div class="d-grid mt-4 mb-3">
+                                                    <button class="btn purple-button text-white">
+                                                        Edit
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock content %}

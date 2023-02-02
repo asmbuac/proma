@@ -1,13 +1,32 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Create a new task
+    Create a New Task
 {% endblock title %}
 {% block content %}
-    <h1>Create a new task</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>Create</button>
-    </form>
+    <section class="text-light p-5 pg-lg-0 pt-lg-5 mb-5 text-center"
+             style="background-color: rgb(74, 44, 95)">
+        <div class="container-fluid">
+            <h1>Create a New Task</h1>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container" style="padding-bottom: 500px;">
+            <div class="row align-items-center justify-content-center py-5">
+                <div class="card position-absolute py-4 shadow-sm"
+                     style="width: 500px;
+                            margin-top: 235px">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="d-grid mt-4 mb-3">
+                                <button class="btn purple-button text-white">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock content %}

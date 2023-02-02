@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Projects
+    My Projects
 {% endblock title %}
 {% block content %}
     <section class="text-light p-5 pg-lg-0 pt-lg-5 text-center"
              style="background-color: rgb(74, 44, 95)">
         <div class="container-fluid">
-            <h1>Projects</h1>
+            <h1>My Projects</h1>
         </div>
     </section>
     <section class="p-5">
         <div class="container">
             {% if projects|length == 0 %}
-                <p>
-                    <h2>There are no projects</h2>
-                </p>
+                <p class="lead">You are not assigned to any projects</p>
             {% else %}
                 <div class="row text-center g-4">
                     {% for project in projects %}
@@ -34,14 +32,7 @@
                                                href="{% url "show_project" project.id %}"
                                                style="text-decoration: none">{{ project.name }}</a>
                                         </h3>
-                                        <p class="card-text">
-                                            {{ project.tasks.all|length }}
-                                            {% if project.tasks.all|length == 1 %}
-                                                task
-                                            {% else %}
-                                                tasks
-                                            {% endif %}
-                                        </p>
+                                        <p class="card-text">{{ project.tasks.all|length }} tasks</p>
                                         <a href="{% url "show_project" project.id %}"
                                            class="btn btn-outline-secondary">Read More</a>
                                     </div>
