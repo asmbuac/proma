@@ -39,3 +39,11 @@ input#search-input:focus {
 form.d-flex div.input-group.input-group-sm {
     margin-left: 0;
 }
+
+.center-cropped {
+    height: 150px;
+    width: 150px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
