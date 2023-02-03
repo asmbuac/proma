@@ -12,6 +12,11 @@ LEVEL = (
 class Team(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
+    picture = models.ImageField(
+        upload_to="images/team",
+        null=True,
+        default=None,
+    )
 
     def __str__(self):
         return self.name
@@ -24,8 +29,8 @@ class UserProfileManager(models.Manager):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.ImageField(
-        upload_to=None,
-        blank=True,
+        upload_to="images/profile",
+        null=True,
         default=None,
     )
     team = models.ForeignKey(
@@ -45,7 +50,7 @@ class UserProfile(models.Model):
         return self.user.username
 
     def createProfile(sender, **kwargs):
-         if kwargs['created']:
-            user_profile = UserProfile.objects.created(user=kwargs['instance'])
+        if kwargs['created']:
+            user_profile = UserProfile.objects.create(user=kwargs['instance'])
 
     post_save.connect(createProfile, sender=User)
